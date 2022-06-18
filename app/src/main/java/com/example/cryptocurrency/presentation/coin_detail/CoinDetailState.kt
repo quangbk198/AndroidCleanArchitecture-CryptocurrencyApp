@@ -1,6 +1,6 @@
-package com.example.cryptocurrency.presentation.coin_list
+package com.example.cryptocurrency.presentation.coin_detail
 
-import com.example.cryptocurrency.domain.model.Coin
+import com.example.cryptocurrency.domain.model.CoinDetail
 
 /**
  * Created by quangnh
@@ -8,8 +8,8 @@ import com.example.cryptocurrency.domain.model.Coin
  * Time: 5:09 PM
  * Project Cryptocurrency
  */
-data class CoinListState(
+data class CoinDetailState(
     val isLoading: Boolean = false,
-    val coins: List<Coin> = emptyList(),
+    val coin: CoinDetail? = null,
     val error: String = ""
 )

@@ -1,6 +1,7 @@
 package com.example.cryptocurrency.data.remote.dto
 
 
+import com.example.cryptocurrency.domain.model.CoinDetail
 import com.google.gson.annotations.SerializedName
 
 data class CoinDetailDto(
@@ -14,7 +15,7 @@ data class CoinDetailDto(
     @SerializedName("is_new") var isNew: Boolean? = null,
     @SerializedName("last_data_at") var lastDataAt: String? = null,
     @SerializedName("links") var links: Links? = null,
-    @SerializedName("links_extended") var linksExtended: List<LinksExtended?>? = null,
+    @SerializedName("links_extended") var linksExtended: List<LinksExtended>? = null,
     @SerializedName("message") var message: String? = null,
     @SerializedName("name") var name: String? = null,
     @SerializedName("open_source") var openSource: Boolean? = null,
@@ -23,8 +24,21 @@ data class CoinDetailDto(
     @SerializedName("rank") var rank: Int? = null,
     @SerializedName("started_at") var startedAt: String? = null,
     @SerializedName("symbol") var symbol: String? = null,
-    @SerializedName("tags") var tags: List<Tag?>? = null,
-    @SerializedName("team") var team: List<Team?>? = null,
+    @SerializedName("tags") var tags: List<Tag>? = null,
+    @SerializedName("team") var team: List<TeamMember>? = null,
     @SerializedName("type") var type: String? = null,
     @SerializedName("whitepaper") var whitepaper: Whitepaper? = null
 )
+
+fun CoinDetailDto.toCoinDetail(): CoinDetail {
+    return CoinDetail(
+        id,
+        name,
+        description,
+        symbol,
+        rank,
+        isActive,
+        tags?.map { it.name!! },
+        team
+    )
+}

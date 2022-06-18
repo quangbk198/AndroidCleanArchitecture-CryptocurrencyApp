@@ -2,9 +2,12 @@ package com.example.cryptocurrency.presentation.coin_detail
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cryptocurrency.common.Constants
 import com.example.cryptocurrency.common.Resource
+import com.example.cryptocurrency.domain.use_case.get_coin.GetCoinUseCase
 import com.example.cryptocurrency.domain.use_case.get_coins.GetCoinsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -19,30 +22,33 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class CoinDetailViewModel @Inject constructor(
-    private val getCoinsUseCase: GetCoinsUseCase
+    private val getCoinUseCase: GetCoinUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel(){
 
-    private val _state = mutableStateOf(CoinListState())
+    private val _state = mutableStateOf(CoinDetailState())
 
-    val state: State<CoinListState> get() = _state
+    val state: State<CoinDetailState> get() = _state
 
     init {
-        getCoins()
+        savedStateHandle.get<String>(Constants.PARAM_COIN_ID)?.let { coinId ->
+            getCoin(coinId = coinId)
+        }
     }
 
-    private fun getCoins() {
-        getCoinsUseCase().onEach { result ->
+    private fun getCoin(coinId: String) {
+        getCoinUseCase(coinId).onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    _state.value = CoinListState(coins = result.data ?: emptyList())
+                    _state.value = CoinDetailState(coin = result.data)
                 }
 
                 is Resource.Error -> {
-                    _state.value = CoinListState(error = result.message ?: "An unexpected error occured")
+                    _state.value = CoinDetailState(error = result.message ?: "An unexpected error occured")
                 }
 
                 is Resource.Loading -> {
-                    _state.value = CoinListState(isLoading = true)
+                    _state.value = CoinDetailState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)

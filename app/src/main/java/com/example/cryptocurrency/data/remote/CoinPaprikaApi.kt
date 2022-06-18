@@ -1,9 +1,20 @@
 package com.example.cryptocurrency.data.remote
 
+import com.example.cryptocurrency.data.remote.dto.CoinDetailDto
+import com.example.cryptocurrency.data.remote.dto.CoinDto
+import retrofit2.http.GET
+import retrofit2.http.Path
+
 /**
  * Created by quangnh
  * Date: 17/6/2022
  * Time: 10:11 AM
  * Project Cryptocurrency
- */interface CoinPaprikaApi {
+ */
+interface CoinPaprikaApi {
+    @GET("/v1/coins")
+    suspend fun getCoins(): List<CoinDto>
+
+    @GET("v1/coins/{coinId}")
+    suspend fun getCoinById(@Path("coinId") coinId: String): CoinDetailDto
 }

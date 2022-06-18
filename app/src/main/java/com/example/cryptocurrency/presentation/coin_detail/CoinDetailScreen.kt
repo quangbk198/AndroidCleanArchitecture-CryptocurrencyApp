@@ -1,23 +1,25 @@
-package com.example.cryptocurrency.presentation.coin_list
+package com.example.cryptocurrency.presentation.coin_detail
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.example.cryptocurrency.presentation.Screen
-import com.example.cryptocurrency.presentation.coin_list.components.CoinListItem
+import com.example.cryptocurrency.presentation.coin_detail.components.CoinTag
+import com.example.cryptocurrency.presentation.coin_detail.components.TeamListItem
+import com.google.accompanist.flowlayout.FlowRow
 
 /**
  * Created by quangnh
@@ -27,22 +29,101 @@ import com.example.cryptocurrency.presentation.coin_list.components.CoinListItem
  */
 
 @Composable
-fun CoinListScreen(
-    navController: NavController,
-    viewModel: CoinListViewModel = hiltViewModel()
+fun CoinDetailScreen(
+    viewModel: CoinDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(state.coins) { coin ->
-                CoinListItem(
-                    coin = coin,
-                    onItemClick = {
-                        navController.navigate(Screen.CoinDetailScreen.route + "/${coin.id}")
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+    ) {
+
+        state.coin?.let { coin ->
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(20.dp)
+            ) {
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "${coin.rank}. ${coin.name} (${coin.symbol})",
+                            color = Color.White,
+                            style = MaterialTheme.typography.h2,
+                            modifier = Modifier.weight(8f)
+                        )
+
+                        Text(
+                            text = if (coin.isActive!!) "active" else "inactive",
+                            color = if (coin.isActive!!) Color.Green else Color.Red,
+                            fontStyle = FontStyle.Italic,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier
+                                .align(CenterVertically)
+                                .weight(2f)
+                        )
                     }
-                )
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    coin.description?.let {
+                        Text(
+                            text = it,
+                            color = Color.White,
+                            style = MaterialTheme.typography.body2
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    Text(
+                        text = "Tags",
+                        color = Color.White,
+                        style = MaterialTheme.typography.h3
+                    )
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    FlowRow(
+                        mainAxisSpacing = 10.dp,
+                        crossAxisSpacing = 10.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        coin.tags?.forEach { tag ->
+                            CoinTag(tag = tag)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    Text(
+                        text = "Team members",
+                        color = Color.White,
+                        style = MaterialTheme.typography.h3
+                    )
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                }
+
+                // List item team member
+                items(coin.team!!) { teamMember ->
+                    TeamListItem(
+                        teamMember = teamMember,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                    )
+
+                    // The line between items
+                    Divider()
+                }
             }
         }
+
+
 
         if (state.error.isNotBlank()) {
             Text(
@@ -58,7 +139,8 @@ fun CoinListScreen(
 
         if (state.isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.Green
             )
         }
     }

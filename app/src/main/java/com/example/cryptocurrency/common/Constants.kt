@@ -5,5 +5,10 @@ package com.example.cryptocurrency.common
  * Date: 16/6/2022
  * Time: 4:14 PM
  * Project Cryptocurrency
- */object Constants {
+ */
+object Constants {
+
+    const val BASE_URL = "https://api.coinpaprika.com/"
+
+    const val PARAM_COIN_ID = "coinId"
 }
