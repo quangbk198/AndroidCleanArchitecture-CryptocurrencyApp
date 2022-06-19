@@ -42,7 +42,7 @@ There are 3 layers in the structure of project: Presentation layer, Domain layer
 #  Library
 
 - Language: [Kotlin](https://kotlinlang.org/)
-- Dependency Injection: [Dagger Hilt](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- Dependency Injection: [Dagger Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 - Executes Asynchronously: [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines?gclid=CjwKCAiA4KaRBhBdEiwAZi1zzrfte38ccz4Cv6bj_OGNL4KpQMa9HyaiZhW7z-StHJ7DQjK1OjDnHhoCLYwQAvD_BwE&gclsrc=aw.ds)
 - Make network call: [Retrofit](https://square.github.io/retrofit/) 
 - Native UI: [Jetpack Compose](https://developer.android.com/jetpack/compose)
