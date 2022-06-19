@@ -37,7 +37,8 @@ fun CoinListScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)) {
+            .background(Color.Black)
+    ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(state.coins) { coin ->
                 CoinListItem(

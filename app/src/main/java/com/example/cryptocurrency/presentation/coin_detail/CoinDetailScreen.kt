@@ -123,8 +123,6 @@ fun CoinDetailScreen(
             }
         }
 
-
-
         if (state.error.isNotBlank()) {
             Text(
                 text = state.error,

@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cryptocurrency.common.Constants
 import com.example.cryptocurrency.presentation.coin_detail.CoinDetailScreen
 import com.example.cryptocurrency.presentation.coin_list.CoinListScreen
 import com.example.cryptocurrency.presentation.ui.theme.CryptocurrencyTheme
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                            route = Screen.CoinDetailScreen.route + "/{coinId}"
+                            route = Screen.CoinDetailScreen.route + "/{${Constants.PARAM_COIN_ID}}"
                         ) {
                             CoinDetailScreen()
                         }
